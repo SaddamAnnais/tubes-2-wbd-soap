@@ -1,0 +1,31 @@
+version: '3.0'
+services:
+  soap-service:
+    container_name: soap-jax-ws
+    build: .
+    ports:
+      - "8001:8001"
+    env_file: .env
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mysql
+    networks:
+      - soap-network
+  mysql:
+    container_name: db-soap
+    image: mysql:latest
+    ports:
+      - "3308:3306"
+    env_file: .env
+    hostname: db-soap
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - soap-network
+volumes:
+  db:
+    driver: local
+networks:
+  soap-network:
+    driver: bridge

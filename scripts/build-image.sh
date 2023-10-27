@@ -1,0 +1,1 @@
+docker build -t tubes-2-wbd-soap:latest .
