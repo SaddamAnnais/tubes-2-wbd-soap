@@ -6,7 +6,55 @@ import org.hibernate.Session;
 import cooklyst.models.Subscription;
 import cooklyst.utils.Hibernate;
 
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
 public class SubscriptionController {
+    public String create(int creatorId, int subscriberId) {
+        try {
+            SessionFactory sessionFactory = Hibernate.getSessionFactory();
+            Session session = sessionFactory.getCurrentSession();
+
+            session.beginTransaction();
+            Subscription toCreate = new Subscription();
+            toCreate.setCreatorID(creatorId);
+            toCreate.setSubscriberID(subscriberId);
+            session.save(toCreate);
+            session.getTransaction().commit();
+
+            return "Subscription created";
+        } catch (Exception e) {
+            return "An error occurred";
+        }
+    }
+
+    public List<Subscription> getPendingSubs() {
+        try {
+            SessionFactory sessionFactory = Hibernate.getSessionFactory();
+            Session session = sessionFactory.getCurrentSession();
+
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Subscription> criteria = builder.createQuery(Subscription.class);
+            Root<Subscription> root = criteria.from(Subscription.class);
+            Predicate predicate = builder.equal(root.get("status"), SubsStatus.PENDING);
+            criteria.select(root).where(predicate);
+            TypedQuery<Subscription> query = session.createQuery(criteria);
+            List<Subscription> subscriptions = query.getResultList();
+            session.getTransaction().commit();
+
+            return subscriptions;
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public SubsStatus getStatus(int creatorId, int subscriberId) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
