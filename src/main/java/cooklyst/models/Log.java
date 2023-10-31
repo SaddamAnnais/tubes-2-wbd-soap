@@ -1,4 +1,4 @@
-package cooklyst.tubes2wbdsoap.models;
+package cooklyst.models;
 
 import java.util.Date;
 import javax.persistence.*;

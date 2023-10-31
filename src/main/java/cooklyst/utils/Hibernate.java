@@ -1,6 +1,7 @@
-package cooklyst.tubes2wbdsoap.utils;
+package cooklyst.utils;
 
-import cooklyst.tubes2wbdsoap.models.*;
+import cooklyst.models.Log;
+import cooklyst.models.Subscription;
 
 import java.util.Properties;
 import org.hibernate.SessionFactory;

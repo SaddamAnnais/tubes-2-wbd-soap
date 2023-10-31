@@ -1,4 +1,4 @@
-package cooklyst.tubes2wbdsoap.utils;
+package cooklyst.utils;
 
 public enum SubsStatus {
     PENDING,
