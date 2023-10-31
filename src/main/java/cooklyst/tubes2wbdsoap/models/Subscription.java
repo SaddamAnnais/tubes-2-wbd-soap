@@ -1,6 +1,7 @@
 package cooklyst.tubes2wbdsoap.models;
 
 
+import cooklyst.tubes2wbdsoap.utils.SubsStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
