@@ -2,6 +2,6 @@ package cooklyst.utils;
 
 public enum SubsStatus {
     PENDING,
-    ACCEPTED,
+    APPROVED,
     REJECTED
 }
