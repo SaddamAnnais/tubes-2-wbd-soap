@@ -9,6 +9,6 @@ public class Env {
     public static final String DB_NAME = dotenv.get("MYSQL_DATABASE");
     public static final String DB_USER = dotenv.get("MYSQL_USER", "root");
     public static final String DB_PASS = DB_USER.equals("root") ? dotenv.get("MYSQL_ROOT_PASSWORD") : dotenv.get("MYSQL_PASSWORD");
-    public static final String APP_KEY = dotenv.get("APP_KEY");
+    public static final String PHP_KEY = dotenv.get("PHP_KEY");
     public static final String REST_KEY = dotenv.get("REST_KEY");
 }
