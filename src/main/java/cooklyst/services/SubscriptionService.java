@@ -3,6 +3,7 @@ package cooklyst.services;
 import cooklyst.models.Subscription;
 import cooklyst.utils.Env;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
+@HandlerChain(file = "../middleware/handlers.xml")
 public class SubscriptionService {
     private static final SubscriptionController subsCon = new SubscriptionController();
 
