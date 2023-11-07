@@ -3,6 +3,7 @@ package cooklyst.middleware;
 import java.util.Date;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPEnvelope;
@@ -18,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.sun.net.httpserver.HttpExchange;
+// import javax.xml.ws.spi.http.HttpExchange;
 import com.sun.xml.ws.developer.JAXWSProperties;
 
 import cooklyst.models.Log;
@@ -26,40 +28,36 @@ import cooklyst.utils.Hibernate;
 public class Logger implements SOAPHandler<SOAPMessageContext> {
   private void logToDB(SOAPMessageContext smc) throws SOAPException {
     boolean isResponse = (boolean) smc.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
-    HttpExchange http = (HttpExchange) smc.get(JAXWSProperties.HTTP_EXCHANGE);
 
     if (!isResponse) {
+      // getting the servlet req
+      HttpServletRequest servletReq = (HttpServletRequest) smc.get(MessageContext.SERVLET_REQUEST);
+
       SOAPPart part = smc.getMessage().getSOAPPart();
       SOAPEnvelope envelope = part.getEnvelope();
       SOAPBody body = envelope.getBody();
 
+      // getting the operation node
       Node operation = body.getChildNodes().item(1);
 
       // getting the operation name
       String content = String.format("%s", operation.getLocalName());
 
+      // making it in a format of method_name param1(val1) param2(val2) ...
       NodeList parameters = operation.getChildNodes();
       for (int i = 1; i < parameters.getLength(); i += 2) {
-        // getting the parameter name and value
         content = String.format("%s %s(%s)", content, parameters.item(i).getLocalName(),
             parameters.item(i).getTextContent());
       }
 
-      // logging
+      // create the log class
       Log newLog = new Log();
       newLog.setDescription(content);
-      newLog.setEndpoint("test endpoint");
-
-
-      // ERROR
-      // HTTP Exchange does not work idk why and it does not shows any error message whatsoever. 
-      
-      // newLog.setEndpoint(http.getRequestURI().getPath());
-      newLog.setEndpoint("Test endpoint");
-
-      // newLog.setIPAddress(http.getRemoteAddress().getHostString());
-      newLog.setIPAddress("Test IP ADDRESS");
+      newLog.setEndpoint(servletReq.getRequestURI());
+      newLog.setIPAddress(servletReq.getRemoteAddr());
       newLog.setTimestamp(new Date());
+
+      // saving it into db
       SessionFactory sessionFactory = Hibernate.getSessionFactory();
       Session session = sessionFactory.getCurrentSession();
 
