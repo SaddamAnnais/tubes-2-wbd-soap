@@ -18,10 +18,6 @@ import org.hibernate.SessionFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.sun.net.httpserver.HttpExchange;
-// import javax.xml.ws.spi.http.HttpExchange;
-import com.sun.xml.ws.developer.JAXWSProperties;
-
 import cooklyst.models.Log;
 import cooklyst.utils.Hibernate;
 
