@@ -1,7 +1,8 @@
-package cooklyst.services;
+package cooklyst.service;
 
-import cooklyst.models.Subscription;
-import cooklyst.utils.Env;
+import cooklyst.entity.Subscription;
+import cooklyst.repository.SubscriptionRepository;
+import cooklyst.util.Env;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -14,7 +15,7 @@ import java.util.List;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
 @HandlerChain(file = "../middleware/handlers.xml")
 public class SubscriptionService {
-    private static final SubscriptionController subsCon = new SubscriptionController();
+    private static final SubscriptionRepository subsCon = new SubscriptionRepository();
 
     @WebMethod
     public String create(String phpKey, int creatorId, int subscriberId) {

@@ -1,10 +1,10 @@
-package cooklyst.services;
+package cooklyst.repository;
 
-import cooklyst.utils.SubsStatus;
+import cooklyst.util.SubsStatus;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
-import cooklyst.models.Subscription;
-import cooklyst.utils.Hibernate;
+import cooklyst.entity.Subscription;
+import cooklyst.util.Hibernate;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,7 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class SubscriptionController {
+public class SubscriptionRepository {
     public String create(int creatorId, int subscriberId) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();

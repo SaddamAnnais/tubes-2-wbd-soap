@@ -1,4 +1,4 @@
-package cooklyst.models;
+package cooklyst.entity;
 
 import java.util.Date;
 import javax.persistence.*;

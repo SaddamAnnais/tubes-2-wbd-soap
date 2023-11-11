@@ -1,4 +1,4 @@
-package cooklyst.utils;
+package cooklyst.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

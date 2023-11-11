@@ -18,8 +18,8 @@ import org.hibernate.SessionFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import cooklyst.models.Log;
-import cooklyst.utils.Hibernate;
+import cooklyst.entity.Log;
+import cooklyst.util.Hibernate;
 
 public class Logger implements SOAPHandler<SOAPMessageContext> {
   private void logToDB(SOAPMessageContext smc) throws SOAPException {

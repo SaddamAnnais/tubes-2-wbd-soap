@@ -1,7 +1,7 @@
-package cooklyst.utils;
+package cooklyst.util;
 
-import cooklyst.models.Log;
-import cooklyst.models.Subscription;
+import cooklyst.entity.Log;
+import cooklyst.entity.Subscription;
 
 import java.util.Properties;
 import org.hibernate.SessionFactory;

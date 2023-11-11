@@ -1,7 +1,7 @@
-package cooklyst.models;
+package cooklyst.entity;
 
 
-import cooklyst.utils.SubsStatus;
+import cooklyst.util.SubsStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

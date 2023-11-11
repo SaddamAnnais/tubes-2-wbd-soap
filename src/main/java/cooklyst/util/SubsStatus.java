@@ -1,4 +1,4 @@
-package cooklyst.utils;
+package cooklyst.util;
 
 public enum SubsStatus {
     PENDING,

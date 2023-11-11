@@ -1,14 +1,15 @@
-package cooklyst.utils;
+package cooklyst.util;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-public class Email {
+public class EmailSender {
     private static Properties prop;
     private static Authenticator auth;
     private static String approvedEmail;
@@ -28,13 +29,14 @@ public class Email {
         };
     }
 
-    public Email() {
+    public EmailSender() {
         if (prop == null || auth == null) {
             setPropAuth();
         }
 
+        Path path = Paths.get("");
         if (rejectedEmail == null) {
-            try (BufferedReader br = new BufferedReader(new FileReader(Paths.get("").toAbsolutePath() + "/src/main/java/cooklyst/utils/declined.html"));) {
+            try (BufferedReader br = new BufferedReader(new FileReader(path.toAbsolutePath() + "/src/main/email/rejected-email.html"));) {
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
 
@@ -52,7 +54,7 @@ public class Email {
         }
 
         if (approvedEmail == null) {
-            try (BufferedReader br = new BufferedReader(new FileReader(Paths.get("").toAbsolutePath() + "/src/main/java/cooklyst/utils/approved.html"));) {
+            try (BufferedReader br = new BufferedReader(new FileReader(path.toAbsolutePath() + "/src/main/email/approved-email.html"));) {
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
 
@@ -88,7 +90,7 @@ public class Email {
 
     // for testing purposes
     public static void main(String[] args) {
-        Email e = new Email();
+        EmailSender e = new EmailSender();
         e.send("hai@email.com", true);
     }
 }
