@@ -1,7 +1,6 @@
 version: "3.0"
 services:
-  soap-service:
-    container_name: soap-jax-ws
+  cooklyst-soap-service:
     build: .
     ports:
       - "8001:8001"
@@ -9,29 +8,45 @@ services:
     volumes:
       - ./:/app
     depends_on:
-      mysql:
+      cooklyst-soap-db:
         condition: service_healthy
+
+    # COMMENT THIS IF YOU USE DOCKER CONFIG TO START ALL CONTAINERS
     networks:
       - soap-network
-  mysql:
-    container_name: db-soap
+
+  cooklyst-soap-db:
     image: mysql:latest
     ports:
       - "3308:3306"
     env_file: .env
-    hostname: db-soap
+    hostname: cooklyst-soap-db
     volumes:
       - ./db:/var/lib/mysql
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p$$MYSQL_ROOT_PASSWORD",
+        ]
       interval: 10s
       timeout: 3s
-      retries: 5      
+      retries: 5
+
+    # COMMENT THIS IF YOU USE DOCKER CONFIG TO START ALL CONTAINERS
     networks:
       - soap-network
+
 volumes:
   db:
     driver: local
+# COMMENT THIS IF YOU USE DOCKER CONFIG TO START ALL CONTAINERS
 networks:
   soap-network:
     driver: bridge
