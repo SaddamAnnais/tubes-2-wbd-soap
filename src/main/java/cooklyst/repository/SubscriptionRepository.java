@@ -1,5 +1,6 @@
 package cooklyst.repository;
 
+import cooklyst.util.EmailSender;
 import cooklyst.util.SubsStatus;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
@@ -14,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class SubscriptionRepository {
-    public String create(int creatorId, int subscriberId) {
+    public String create(int creatorId, int subscriberID, String subscriberEmail) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -22,7 +23,8 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toCreate = new Subscription();
             toCreate.setCreatorID(creatorId);
-            toCreate.setSubscriberID(subscriberId);
+            toCreate.setSubscriberID(subscriberID);
+            toCreate.setSubscriberEmail(subscriberEmail);
             session.save(toCreate);
             session.getTransaction().commit();
 
@@ -55,7 +57,7 @@ public class SubscriptionRepository {
         }
     }
 
-    public SubsStatus getStatus(int creatorId, int subscriberId) {
+    public SubsStatus getStatus(int creatorId, int subscriberID) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -63,7 +65,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toFind = new Subscription();
             toFind.setCreatorID(creatorId);
-            toFind.setSubscriberID(subscriberId);
+            toFind.setSubscriberID(subscriberID);
             Subscription subscription = session.get(Subscription.class, toFind);
             session.getTransaction().commit();
 
@@ -78,7 +80,7 @@ public class SubscriptionRepository {
         }
     }
 
-    public String approve(int creatorId, int subscriberId) {
+    public String approve(int creatorId, int subscriberID) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -86,7 +88,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toFind = new Subscription();
             toFind.setCreatorID(creatorId);
-            toFind.setSubscriberID(subscriberId);
+            toFind.setSubscriberID(subscriberID);
             Subscription toApprove = session.get(Subscription.class, toFind);
 
             if (toApprove == null) {
@@ -99,6 +101,10 @@ public class SubscriptionRepository {
                     toApprove.setStatus(SubsStatus.APPROVED);
                     session.update(toApprove);
                     session.getTransaction().commit();
+
+                    EmailSender e = new EmailSender();
+                    e.send(toApprove.getSubscriberEmail(), true);
+
                     return "Successfully approved subscription request";
                 case APPROVED:
                     session.getTransaction().commit();
@@ -113,7 +119,7 @@ public class SubscriptionRepository {
         }
     }
 
-    public String reject(int creatorId, int subscriberId) {
+    public String reject(int creatorId, int subscriberID) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -121,7 +127,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toFind = new Subscription();
             toFind.setCreatorID(creatorId);
-            toFind.setSubscriberID(subscriberId);
+            toFind.setSubscriberID(subscriberID);
             Subscription toReject = session.get(Subscription.class, toFind);
 
             if (toReject == null) {
@@ -134,6 +140,10 @@ public class SubscriptionRepository {
                     toReject.setStatus(SubsStatus.APPROVED);
                     session.update(toReject);
                     session.getTransaction().commit();
+
+                    EmailSender e = new EmailSender();
+                    e.send(toReject.getSubscriberEmail(), false);
+
                     return "Successfully rejected subscription request";
                 case APPROVED:
                     session.getTransaction().commit();
