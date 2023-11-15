@@ -21,6 +21,9 @@ public class Subscription implements Serializable {
     private int creatorID;
 
     @Id
+    @Column(nullable = false, name = "subscriber_id")
+    private int subscriberID;
+
     @Column(nullable = false, name = "subscriber_email")
     private String subscriberEmail;
 

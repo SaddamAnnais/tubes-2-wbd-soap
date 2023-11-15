@@ -15,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class SubscriptionRepository {
-    public String create(int creatorId, String subscriberEmail) {
+    public String create(int creatorId, int subscriberID, String subscriberEmail) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -23,6 +23,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toCreate = new Subscription();
             toCreate.setCreatorID(creatorId);
+            toCreate.setSubscriberID(subscriberID);
             toCreate.setSubscriberEmail(subscriberEmail);
             session.save(toCreate);
             session.getTransaction().commit();
@@ -56,8 +57,7 @@ public class SubscriptionRepository {
         }
     }
 
-    // ini buat?
-    public SubsStatus getStatus(int creatorId, String subscriberEmail) {
+    public SubsStatus getStatus(int creatorId, int subscriberID) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -65,7 +65,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toFind = new Subscription();
             toFind.setCreatorID(creatorId);
-            toFind.setSubscriberEmail(subscriberEmail);
+            toFind.setSubscriberID(subscriberID);
             Subscription subscription = session.get(Subscription.class, toFind);
             session.getTransaction().commit();
 
@@ -80,7 +80,7 @@ public class SubscriptionRepository {
         }
     }
 
-    public String approve(int creatorId, String subscriberEmail) {
+    public String approve(int creatorId, int subscriberID) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -88,7 +88,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toFind = new Subscription();
             toFind.setCreatorID(creatorId);
-            toFind.setSubscriberEmail(subscriberEmail);
+            toFind.setSubscriberID(subscriberID);
             Subscription toApprove = session.get(Subscription.class, toFind);
 
             if (toApprove == null) {
@@ -119,7 +119,7 @@ public class SubscriptionRepository {
         }
     }
 
-    public String reject(int creatorId, String subscriberEmail) {
+    public String reject(int creatorId, int subscriberID) {
         try {
             SessionFactory sessionFactory = Hibernate.getSessionFactory();
             Session session = sessionFactory.getCurrentSession();
@@ -127,7 +127,7 @@ public class SubscriptionRepository {
             session.beginTransaction();
             Subscription toFind = new Subscription();
             toFind.setCreatorID(creatorId);
-            toFind.setSubscriberEmail(subscriberEmail);
+            toFind.setSubscriberID(subscriberID);
             Subscription toReject = session.get(Subscription.class, toFind);
 
             if (toReject == null) {

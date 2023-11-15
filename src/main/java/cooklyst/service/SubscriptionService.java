@@ -18,27 +18,27 @@ public class SubscriptionService {
     private static final SubscriptionRepository subsCon = new SubscriptionRepository();
 
     @WebMethod
-    public String create(String phpKey, int creatorId, String subscriberEmail) {
+    public String create(String phpKey, int creatorId, int subscriberID, String subscriberEmail) {
         if (!phpKey.equals(Env.PHP_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.create(creatorId, subscriberEmail);
+        return subsCon.create(creatorId, subscriberID, subscriberEmail);
     }
 
     @WebMethod
-    public String approve(String restKey, int creatorId, String subscriberEmail) {
+    public String approve(String restKey, int creatorId, int subscriberID) {
         if (!restKey.equals(Env.REST_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.approve(creatorId, subscriberEmail);
+        return subsCon.approve(creatorId, subscriberID);
     }
 
     @WebMethod
-    public String reject(String restKey, int creatorId, String subscriberEmail) {
+    public String reject(String restKey, int creatorId, int subscriberID) {
         if (!restKey.equals(Env.REST_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.reject(creatorId, subscriberEmail);
+        return subsCon.reject(creatorId, subscriberID);
     }
 
     @WebMethod
