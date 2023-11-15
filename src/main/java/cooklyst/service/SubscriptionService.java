@@ -48,4 +48,12 @@ public class SubscriptionService {
         }
         return subsCon.getPendingSubs();
     }
+
+    @WebMethod
+    public String getStatus(String restKey, int creatorId, int subscriberID) {
+        if (!restKey.equals(Env.REST_KEY)) {
+            return "Unauthorized";
+        }
+        return subsCon.getStatus(creatorId, subscriberID).toString();
+    }
 }
