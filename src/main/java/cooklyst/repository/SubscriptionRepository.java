@@ -2,6 +2,7 @@ package cooklyst.repository;
 
 import cooklyst.util.EmailSender;
 import cooklyst.util.SubsStatus;
+import cooklyst.util.ThreadPool;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
 import cooklyst.entity.Subscription;
@@ -103,8 +104,11 @@ public class SubscriptionRepository {
                     session.update(toApprove);
                     session.getTransaction().commit();
 
-                    EmailSender e = new EmailSender();
-                    e.send(toApprove.getSubscriberEmail(), true);
+                    ThreadPool.getExecutor().execute(() -> {
+                        EmailSender e = new EmailSender();
+                        e.send(toApprove.getSubscriberEmail(), true);
+                    });
+
 
                     return "Successfully approved subscription request";
                 case APPROVED:
@@ -142,8 +146,10 @@ public class SubscriptionRepository {
                     session.update(toReject);
                     session.getTransaction().commit();
 
-                    EmailSender e = new EmailSender();
-                    e.send(toReject.getSubscriberEmail(), false);
+                    ThreadPool.getExecutor().execute(() -> {
+                        EmailSender e = new EmailSender();
+                        e.send(toReject.getSubscriberEmail(), false);
+                    });
 
                     return "Successfully rejected subscription request";
                 case APPROVED:
