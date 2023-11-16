@@ -4,5 +4,5 @@ public enum SubsStatus {
     PENDING,
     APPROVED,
     REJECTED,
-    NULL
+    NO_DATA
 }

@@ -15,14 +15,14 @@ import java.util.List;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
 @HandlerChain(file = "../middleware/handlers.xml")
 public class SubscriptionService {
-    private static final SubscriptionRepository subsCon = new SubscriptionRepository();
+    private static final SubscriptionRepository subsRepo = new SubscriptionRepository();
 
     @WebMethod
     public String create(String phpKey, int creatorId, int subscriberID, String subscriberEmail) {
         if (!phpKey.equals(Env.PHP_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.create(creatorId, subscriberID, subscriberEmail);
+        return subsRepo.create(creatorId, subscriberID, subscriberEmail);
     }
 
     @WebMethod
@@ -30,7 +30,7 @@ public class SubscriptionService {
         if (!restKey.equals(Env.REST_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.approve(creatorId, subscriberID);
+        return subsRepo.approve(creatorId, subscriberID);
     }
 
     @WebMethod
@@ -38,7 +38,7 @@ public class SubscriptionService {
         if (!restKey.equals(Env.REST_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.reject(creatorId, subscriberID);
+        return subsRepo.reject(creatorId, subscriberID);
     }
 
     @WebMethod
@@ -46,7 +46,7 @@ public class SubscriptionService {
         if (!restKey.equals(Env.REST_KEY)) {
             return new ArrayList<>();
         }
-        return subsCon.getPendingSubs();
+        return subsRepo.getPendingSubs();
     }
 
     @WebMethod
@@ -54,6 +54,7 @@ public class SubscriptionService {
         if (!restKey.equals(Env.REST_KEY)) {
             return "Unauthorized";
         }
-        return subsCon.getStatus(creatorId, subscriberID).toString();
+        System.out.println("babi soap anj");
+        return subsRepo.getStatus(creatorId, subscriberID).toString();
     }
 }

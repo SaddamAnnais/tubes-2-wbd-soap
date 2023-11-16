@@ -71,13 +71,13 @@ public class SubscriptionRepository {
             session.getTransaction().commit();
 
             if (subscription == null) {
-                return SubsStatus.NULL;
+                return SubsStatus.NO_DATA;
             }
 
             return subscription.getStatus();
 
         } catch (Exception e) {
-            return SubsStatus.NULL;
+            return SubsStatus.NO_DATA;
         }
     }
 
@@ -103,8 +103,8 @@ public class SubscriptionRepository {
                     session.update(toApprove);
                     session.getTransaction().commit();
 
-//                    EmailSender e = new EmailSender();
-//                    e.send(toApprove.getSubscriberEmail(), true);
+                    EmailSender e = new EmailSender();
+                    e.send(toApprove.getSubscriberEmail(), true);
 
                     return "Successfully approved subscription request";
                 case APPROVED:
