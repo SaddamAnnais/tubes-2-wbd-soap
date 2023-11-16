@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionRepository {
@@ -53,7 +54,7 @@ public class SubscriptionRepository {
             return subscriptions;
 
         } catch (Exception e) {
-            return null;
+            return new ArrayList<Subscription>();
         }
     }
 
@@ -70,13 +71,13 @@ public class SubscriptionRepository {
             session.getTransaction().commit();
 
             if (subscription == null) {
-                return null;
+                return SubsStatus.NULL;
             }
 
             return subscription.getStatus();
 
         } catch (Exception e) {
-            return null;
+            return SubsStatus.NULL;
         }
     }
 
@@ -102,8 +103,8 @@ public class SubscriptionRepository {
                     session.update(toApprove);
                     session.getTransaction().commit();
 
-                    EmailSender e = new EmailSender();
-                    e.send(toApprove.getSubscriberEmail(), true);
+//                    EmailSender e = new EmailSender();
+//                    e.send(toApprove.getSubscriberEmail(), true);
 
                     return "Successfully approved subscription request";
                 case APPROVED:
