@@ -16,9 +16,9 @@ public class DomainFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String domain = httpRequest.getServerName();
 
-        if (domain.equals("localhost")) {
+//        if (domain.equals("localhost")) {
             chain.doFilter(request, response);
-        }
+//        }
     }
 
     @Override
